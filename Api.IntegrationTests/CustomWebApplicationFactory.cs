@@ -16,21 +16,27 @@ namespace API.IntegrationTests
         {
             builder.ConfigureServices(services =>
             {
-                // Remove the app's ApplicationDbContext registration.
-                var descriptor = services.SingleOrDefault(
-                        d => d.ServiceType ==
-                            typeof(DbContextOptions<ApplicationDbContext>));
+                var testDb = Environment.GetEnvironmentVariable("TEST_DB");
+                var overrideDb = testDb != "sqlserver";
 
-                if (descriptor != null)
+                if (overrideDb)
                 {
-                    services.Remove(descriptor);
-                }
+                    // Remove the app's ApplicationDbContext registration.
+                    var descriptor = services.SingleOrDefault(
+                            d => d.ServiceType ==
+                                typeof(DbContextOptions<ApplicationDbContext>));
 
-                // Add ApplicationDbContext using an in-memory database for testing.
-                services.AddDbContext<ApplicationDbContext>(options =>
+                    if (descriptor != null)
                     {
-                        options.UseInMemoryDatabase("InMemoryDbForTesting");
-                    });
+                        services.Remove(descriptor);
+                    }
+
+                    // Add ApplicationDbContext using an in-memory database for testing.
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        {
+                            options.UseInMemoryDatabase("InMemoryDbForTesting");
+                        });
+                }
 
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
@@ -49,6 +55,7 @@ namespace API.IntegrationTests
 
                     try
                     {
+                        Console.WriteLine($"ProviderName: {db.Database.ProviderName}");
                         // Seed the database with test data.
                         // Utilities.InitializeDbForTests(db);
                     }

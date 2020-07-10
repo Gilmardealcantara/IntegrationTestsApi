@@ -32,7 +32,7 @@ namespace API.IntegrationTests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var datalist = await response.Content.ReadAsAsync<JObject[]>();
-            Console.WriteLine(JsonConvert.SerializeObject(datalist, Formatting.Indented));
+            // Console.WriteLine(JsonConvert.SerializeObject(datalist, Formatting.Indented));
             Assert.NotNull(datalist);
             Assert.NotEmpty(datalist);
 

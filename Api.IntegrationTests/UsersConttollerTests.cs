@@ -37,7 +37,7 @@ namespace API.IntegrationTests
             Assert.NotNull(users);
             Assert.NotEmpty(users);
 
-            Console.WriteLine(JsonConvert.SerializeObject(users, Formatting.Indented));
+            // Console.WriteLine(JsonConvert.SerializeObject(users, Formatting.Indented));
 
             foreach (var user in users)
             {

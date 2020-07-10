@@ -22,7 +22,6 @@ namespace Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    Console.WriteLine(args);
                     webBuilder.UseStartup<Startup>();
                 });
     }
