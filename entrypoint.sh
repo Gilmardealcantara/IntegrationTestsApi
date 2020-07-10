@@ -1,13 +1,13 @@
 #!/bin/bash
 
 set -e
-run_cmd="dotnet run --urls http://*:80"
+run_cmd="dotnet run --urls http://*:80 -p ./Api"
 
 echo -e "\n\nInit Migrations!!!\n\n"
-rm -rf Migrations/
-/app/dotnet-ef migrations add Initial
+rm -rf ./Api/Migrations/
+/app/dotnet-ef migrations add Initial -p ./Api
 
-until /app/dotnet-ef database update -v; do
+until /app/dotnet-ef database update -v -p ./Api; do
 >&2 echo "SQL Server is starting up"
 sleep 1
 done
