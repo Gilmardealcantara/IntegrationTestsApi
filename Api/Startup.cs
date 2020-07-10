@@ -29,7 +29,7 @@ namespace Api
         {
             var connection = @"Server=db;Database=master;User=sa;Password=Your_password123;";
 
-            services.AddDbContextPool<ApplicationDbContext>(
+            services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(connection)
             );
             services.AddControllers();

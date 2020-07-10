@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using Api;
 using Api.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
 using Xunit;
+using FluentValidation;
+
 
 namespace API.IntegrationTests
 {
@@ -24,15 +27,24 @@ namespace API.IntegrationTests
         }
 
         [Fact]
-        public async Task Post_ListUsers_ReturnsListOfUsers()
+        public async Task Get_ListUsers_ReturnsListOfUsers()
         {
-            // var response = await _client.GetAsync("/values");
+            var response = await _client.GetAsync("/users");
 
-            // Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            // var data = await response.Content.ReadAsAsync<User[]>();
-            // Assert.NotNull(data);
-            // Assert.Empty(data);
+            var users = await response.Content.ReadAsAsync<User[]>();
+            Assert.NotNull(users);
+            Assert.NotEmpty(users);
+
+            Console.WriteLine(JsonConvert.SerializeObject(users, Formatting.Indented));
+
+            foreach (var user in users)
+            {
+                var validator = new UserValidator();
+                var result = validator.Validate(user);
+                Assert.True(result.IsValid);
+            }
         }
     }
 }
