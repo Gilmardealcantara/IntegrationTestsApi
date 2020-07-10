@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Data;
+using Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,5 +26,14 @@ namespace Api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Get() => Ok(await _context.Users.ToListAsync());
+
+        [HttpGet("{id}/repos")]
+        public async Task<IActionResult> GetGitRepos([FromServices] IGitService service, int id)
+        {
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return BadRequest("User not found");
+            return Ok(await service.GetGitRepos(user.GitUserName));
+        }
     }
 }

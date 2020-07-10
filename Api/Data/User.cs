@@ -6,6 +6,7 @@ namespace Api.Data
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string GitUserName { get; set; }
     }
 
     public class UserValidator : AbstractValidator<User>

@@ -46,5 +46,26 @@ namespace API.IntegrationTests
                 Assert.True(result.IsValid);
             }
         }
+
+        [Fact]
+        public async Task Get_WhenOk_ReturnsGitRepoList()
+        {
+            var response = await _client.GetAsync("/users/1/repos");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var repos = await response.Content.ReadAsAsync<string[]>();
+            Console.WriteLine(JsonConvert.SerializeObject(repos, Formatting.Indented));
+
+            Assert.NotNull(repos);
+            Assert.Single(repos);
+        }
+
+        [Fact]
+        public async Task Get_WhenUseNotExists_ReturnsBadRequest()
+        {
+            var response = await _client.GetAsync("/users/17/repos");
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }

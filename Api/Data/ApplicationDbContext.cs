@@ -14,7 +14,7 @@ namespace Api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(new User[]{
-                new User {Id = 1, Name = "Gilmar"}
+                new User {Id = 1, Name = "Gilmar", GitUserName = "gilmardealcantara"}
             });
 
         }

@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
 using Api.Data;
+using Api.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace API.IntegrationTests
 {
@@ -37,6 +39,16 @@ namespace API.IntegrationTests
                             options.UseInMemoryDatabase("InMemoryDbForTesting");
                         });
                 }
+
+
+                services.AddTransient<IGitService>(x =>
+                {
+                    var srvMock = new Mock<IGitService>();
+                    srvMock.Setup(x => x.GetGitRepos("gilmardealcantara"))
+                        .ReturnsAsync(new string[] { "mockRepo" });
+                    return srvMock.Object;
+                });
+
 
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
