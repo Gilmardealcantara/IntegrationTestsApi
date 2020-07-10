@@ -15,9 +15,9 @@ namespace Api.Controllers
     {
 
         private readonly ILogger<UsersController> _logger;
-        private readonly MainContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UsersController(ILogger<UsersController> logger, MainContext context)
+        public UsersController(ILogger<UsersController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
